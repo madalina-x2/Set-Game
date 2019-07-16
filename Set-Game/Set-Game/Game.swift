@@ -17,6 +17,10 @@ struct Game {
     private(set) var cardsSelected = [Card]()
     private(set) var cardsSets = [[Card]]()
     
+    init() {
+        drawCards(12) { deal() }
+    }
+    
     private var isSet: Bool? {
         get {
             guard cardsSelected.count == 3 else { return nil }
@@ -53,6 +57,10 @@ struct Game {
                 cardsSelected = cardsSelected.filter() { $0 != choosenCard }
         }
     }
+    
+    mutating func reset() {
+        self = Game.init()
+    }
 }
 
 private extension Array where Element == Card {
@@ -63,5 +71,21 @@ private extension Array where Element == Card {
         let color      = Set(self.map { $0.color } )
         
         return  number.count != 2 && symbol.count != 2 && decoration.count != 2 && color.count != 2
+    }
+}
+
+private extension Game {
+    
+    // score constants - enum ?
+    
+    mutating func deal() {
+        if let card = deck.deal() {
+            cardsOnTable.append(card)
+        }
+    }
+    
+    func drawCards(_ drawingCount: Int, closure: ()->()) {
+        guard drawingCount > 0 else { return }
+        for _ in 1...drawingCount { closure() }
     }
 }
