@@ -22,7 +22,36 @@ struct Game {
             guard cardsSelected.count == 3 else { return nil }
             return cardsSelected.isSet()
         }
+        set {
+            if newValue != nil {
+                switch newValue! {
+                case true:
+                    cardsSets.append(cardsSelected)
+                    // replace matched card(s)
+                    cardsSelected.removeAll()
+                    // score bonus ?
+                case false:
+                    cardsSelected.removeAll()
+                    // score penalty
+                }
+            } else { cardsSelected.removeAll() }
+        }
         
+    }
+    
+    mutating func chooseCard(at index: Int) {
+        assert(cardsOnTable.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
+        
+        let choosenCard = cardsOnTable[index]
+        
+        switch cardsSelected {
+            case let cardsForSet where cardsForSet.count == 3:
+                isSet = isSet
+            case let cardsForSet where !cardsForSet.contains(choosenCard):
+                cardsSelected.append(choosenCard)
+            default:
+                cardsSelected = cardsSelected.filter() { $0 != choosenCard }
+        }
     }
 }
 
