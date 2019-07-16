@@ -10,16 +10,40 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var game = Game()
+    
+    @IBOutlet var cardButtons: [UIButton]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        updateViewFromModel()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBOutlet weak private var setCountLabel: UILabel!
+    @IBOutlet weak private var scoreLabel: UILabel!
+    @IBOutlet weak private var deckCountLabel: UILabel!
+    
+    
+    @IBAction private func newGame(_ sender: UIButton) {
+        game.reset()
+        updateViewFromModel()
     }
-
-
+    
+    @IBAction func touchCard(_ sender: UIButton) {
+        if let cardNumber = cardButtons.index(of: sender) {
+            game.chooseCard(at: cardNumber)
+            updateViewFromModel()
+        } else { print("chosen card was not in cardButtons") }
+    }
+    
+    @IBAction private func dealCards(_ sender: UIButton) {
+        game.dealThreeCards()
+        updateViewFromModel()
+    }
+    
+    private func updateViewFromModel() {
+        // TODO
+    }
+    
 }
 
