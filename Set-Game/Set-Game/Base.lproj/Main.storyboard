@@ -209,20 +209,8 @@
                                 <color key="textColor" red="0.22165864709999999" green="0.50971049069999996" blue="0.50968676810000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bCa-yj-IwH">
-                                <rect key="frame" x="231" y="748" width="128" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.51376312970000004" green="0.47460544110000003" blue="0.43529906870000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="3 EXTRA CARDS">
-                                    <color key="titleColor" red="0.80375760789999995" green="0.78840261700000003" blue="0.69024562840000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="dealCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mhr-W7-Rja"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kan-Ka-vjC">
-                                <rect key="frame" x="264" y="705" width="95" height="30"/>
+                                <rect key="frame" x="264" y="748" width="95" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.51376312971115112" green="0.47460544109344482" blue="0.43529906868934631" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -233,11 +221,24 @@
                                     <action selector="newGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kux-In-dCw"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bCa-yj-IwH">
+                                <rect key="frame" x="264" y="705" width="95" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.51376312970000004" green="0.47460544110000003" blue="0.43529906870000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="+ 3 CARDS">
+                                    <color key="titleColor" red="0.80375760789999995" green="0.78840261700000003" blue="0.69024562840000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="dealCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mhr-W7-Rja"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.54036450386047363" green="0.69022578001022339" blue="0.63133102655410767" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="dealCardsButton" destination="bCa-yj-IwH" id="LsC-QN-p0U"/>
                         <outlet property="deckCountLabel" destination="yyw-xQ-gXL" id="18F-Sj-Tgo"/>
                         <outlet property="scoreLabel" destination="ueF-g9-KRS" id="WhH-vS-wbB"/>
                         <outlet property="setCountLabel" destination="8BO-Em-lUD" id="Leo-dn-Mia"/>
