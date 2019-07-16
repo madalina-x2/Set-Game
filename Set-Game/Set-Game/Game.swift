@@ -18,7 +18,7 @@ struct Game {
     private(set) var cardsSets = [[Card]]()
     
     init() {
-        drawCards(12) { deal() }
+        dealCards(12) { deal() }
     }
     
     private var isSet: Bool? {
@@ -61,7 +61,31 @@ struct Game {
     mutating func reset() {
         self = Game.init()
     }
+    
+    mutating func dealThreeCards() {
+        dealCards(3) { deal() }
+    }
+    
+    private mutating func replaceOrRemoveCard() {
+        for cardSelected in cardsSelected {
+            let indexForChange = cardsOnTable.index(of: cardSelected)
+            
+            if cardsOnTable.count <= 12, let card = deck.deal() {
+                cardsOnTable[indexForChange!] = card
+            } else {
+                cardsOnTable.remove(at: indexForChange!)
+            }
+        }
+    }
+    
+    mutating func isEnd() -> Bool {
+        // TODO
+        // how to check when it's over
+        return false
+    }
 }
+
+// EXTENSIONS
 
 private extension Array where Element == Card {
     func isSet() -> Bool {
@@ -84,8 +108,8 @@ private extension Game {
         }
     }
     
-    func drawCards(_ drawingCount: Int, closure: ()->()) {
-        guard drawingCount > 0 else { return }
-        for _ in 1...drawingCount { closure() }
+    func dealCards(_ dealingCount: Int, closure: ()->()) {
+        guard dealingCount > 0 else { return }
+        for _ in 1...dealingCount { closure() }
     }
 }
