@@ -12,8 +12,8 @@ struct Card {
     
     let number: Number
     let symbol: Symbol
-    let color: Color
     let decoration: Decoration
+    let color: Color
     
     enum Number: Int {
         case one, two, three
