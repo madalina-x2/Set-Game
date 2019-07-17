@@ -109,7 +109,9 @@ private extension Game {
     }
     
     func dealCards(_ dealingCount: Int, closure: ()->()) {
-        guard dealingCount > 0 else { return }
+        if dealingCount < 1 {
+            return
+        }
         for _ in 1...dealingCount { closure() }
     }
 }
