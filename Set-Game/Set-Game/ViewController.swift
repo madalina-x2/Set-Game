@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         //scoreLabel.text = "SCORE: \(game.score)"
         setCountLabel.text = "SETS: \(game.cardsSets.count)"
         
-        if game.cardsOnTable.count < 24, game.deckCount > 0 {
+        if game.cardsOnTable.count < 27, game.deckCount > 0 {
             dealCardsButton.isEnabled = true
         } else { dealCardsButton.isEnabled = false }
         
@@ -62,11 +62,11 @@ class ViewController: UIViewController {
                     button.isHidden = false
                     button.setAttributedTitle(attributedStringForCard(game.cardsOnTable[index]), for: .normal)
                     button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
-                } else {
-                    button.isHidden = true
-                    button.setTitle("", for: UIControlState.normal)
-                    button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
                 }
+            } else {
+                button.isHidden = true
+                button.setTitle("", for: UIControlState.normal)
+                button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
             }
             
         }
