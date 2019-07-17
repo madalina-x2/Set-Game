@@ -45,7 +45,7 @@ class ViewController: UIViewController {
     
     private func updateViewFromModel() {
         deckCountLabel.text = "DECK: \(game.deckCount)"
-        //scoreLabel.text = "SCORE: \(game.score)"
+        scoreLabel.text = "SCORE: \(game.score)"
         setCountLabel.text = "SETS: \(game.cardsSets.count)"
         
         if game.cardsOnTable.count < 27, game.deckCount > 0 {
@@ -58,13 +58,17 @@ class ViewController: UIViewController {
                 let card: Card? = game.cardsOnTable[index]
                 
                 if let card = card, game.cardsOnTable.contains(card) {
+                    button.setAttributedTitle(attributedStringForCard(game.cardsOnTable[index]), for: .normal)
                     button.isEnabled = true
                     button.isHidden = false
-                    button.setAttributedTitle(attributedStringForCard(game.cardsOnTable[index]), for: .normal)
                     button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
+                    
+                    button.layer.cornerRadius = 8.0
                 }
             } else {
                 button.isHidden = true
+                
+                button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
                 button.setTitle("", for: UIControlState.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
             }
@@ -105,7 +109,7 @@ class ViewController: UIViewController {
                 switch card.decoration {
                 case .striped: return 0.20
                 case .filled: return 1.0
-                case .outline: return 0.60
+                case .outline: return 0.0
                 }
                 }()
             )

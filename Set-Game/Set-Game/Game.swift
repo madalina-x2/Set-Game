@@ -13,6 +13,8 @@ struct Game {
     private var deck = CardDeck()
     var deckCount: Int { return deck.cards.count }
     
+    private(set) var score = 0
+    
     private(set) var cardsOnTable = [Card]()
     private(set) var cardsSelected = [Card]()
     private(set) var cardsSets = [[Card]]()
@@ -33,10 +35,10 @@ struct Game {
                     cardsSets.append(cardsSelected)
                     // replace matched card(s)
                     cardsSelected.removeAll()
-                    // score bonus ?
+                    score += Score.bonus.rawValue
                 case false:
                     cardsSelected.removeAll()
-                    // score penalty
+                    score += Score.penalty.rawValue
                 }
             } else { cardsSelected.removeAll() }
         }
@@ -100,7 +102,9 @@ private extension Array where Element == Card {
 
 private extension Game {
     
-    // score constants - enum ?
+    enum Score: Int {
+        case bonus = 3, penalty = -2
+    }
     
     mutating func deal() {
         if let card = deck.deal() {
