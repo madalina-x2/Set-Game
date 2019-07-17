@@ -33,7 +33,7 @@ struct Game {
                 switch newValue! {
                 case true:
                     cardsSets.append(cardsSelected)
-                    // replace matched card(s)
+                    replaceOrRemoveCard()
                     cardsSelected.removeAll()
                     score += Score.bonus.rawValue
                 case false:
