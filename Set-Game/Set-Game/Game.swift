@@ -14,6 +14,7 @@ struct Game {
     var deckCount: Int { return deck.cards.count }
     
     private(set) var score = 0
+    private(set) var set = "X SET"
     
     private(set) var cardsOnTable = [Card]()
     private(set) var cardsSelected = [Card]()
@@ -25,20 +26,23 @@ struct Game {
     
     private var isSet: Bool? {
         get {
-            guard cardsSelected.count == 3 else { return nil }
-            return cardsSelected.isSet()
+            if cardsSelected.count == 3 {
+                return cardsSelected.isSet()
+            } else { return nil }
         }
         set {
             if newValue != nil {
                 switch newValue! {
                 case true:
                     cardsSets.append(cardsSelected)
+                    score += scoreBonus()
                     replaceOrRemoveCard()
                     cardsSelected.removeAll()
-                    score += Score.bonus.rawValue
+                    set = "SET!"
                 case false:
                     cardsSelected.removeAll()
-                    score += Score.penalty.rawValue
+                    score += scorePenalty()
+                    set = "X SET"
                 }
             } else { cardsSelected.removeAll() }
         }
@@ -48,15 +52,19 @@ struct Game {
     mutating func chooseCard(at index: Int) {
         assert(cardsOnTable.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
         
-        let choosenCard = cardsOnTable[index]
+        let chosenCard = cardsOnTable[index]
         
         switch cardsSelected {
+            // if = 3 cards, check for SET match
             case let cardsForSet where cardsForSet.count == 3:
                 isSet = isSet
-            case let cardsForSet where !cardsForSet.contains(choosenCard):
-                cardsSelected.append(choosenCard)
+            // if < 3 => add chosen card to selected
+            case let cardsForSet where !cardsForSet.contains(chosenCard):
+                cardsSelected.append(chosenCard)
+            // not a match, start building a set from currently chosen card
             default:
-                cardsSelected = cardsSelected.filter() { $0 != choosenCard }
+                cardsSelected = cardsSelected.filter() { $0 == chosenCard }
+            
         }
     }
     
@@ -103,7 +111,7 @@ private extension Array where Element == Card {
 private extension Game {
     
     enum Score: Int {
-        case bonus = 3, penalty = -2
+        case bonus, penalty
     }
     
     mutating func deal() {
@@ -117,5 +125,21 @@ private extension Game {
             return
         }
         for _ in 1...dealingCount { closure() }
+    }
+    
+    func scoreBonus() -> Int {
+        print("cards on table: \(cardsOnTable.count))")
+        switch cardsOnTable.count {
+        case 27: return 1
+        case 24: return 2
+        case 21: return 3
+        case 18: return 4
+        case 15: return 5
+        default: return 6
+        }
+    }
+    
+    func scorePenalty() -> Int {
+        return 7 - scoreBonus()
     }
 }

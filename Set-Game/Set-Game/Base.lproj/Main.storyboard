@@ -78,6 +78,13 @@
                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QNs-0z-5HU"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SETS: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BO-Em-lUD">
+                                <rect key="frame" x="23" y="671" width="69" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <color key="textColor" red="0.22165864706039429" green="0.50971049070358276" blue="0.50968676805496216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DECK: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyw-xQ-gXL">
                                 <rect key="frame" x="23" y="743" width="133" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -326,11 +333,11 @@
                                     <action selector="touchCard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="E3P-kH-f5e"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SETS: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BO-Em-lUD">
-                                <rect key="frame" x="23" y="671" width="69" height="35"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEA-Kk-YyU">
+                                <rect key="frame" x="100" y="680" width="0.0" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" red="0.22165864706039429" green="0.50971049070358276" blue="0.50968676805496216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.32153371680838422" green="0.51896613836288452" blue="0.32441856977600592" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -342,6 +349,7 @@
                         <outlet property="deckCountLabel" destination="yyw-xQ-gXL" id="18F-Sj-Tgo"/>
                         <outlet property="scoreLabel" destination="ueF-g9-KRS" id="WhH-vS-wbB"/>
                         <outlet property="setCountLabel" destination="8BO-Em-lUD" id="Leo-dn-Mia"/>
+                        <outlet property="setInformLabel" destination="KEA-Kk-YyU" id="ctz-s0-L90"/>
                         <outletCollection property="cardButtons" destination="aFt-B7-UE0" collectionClass="NSMutableArray" id="wMY-hA-XK4"/>
                         <outletCollection property="cardButtons" destination="lzN-qk-xUY" collectionClass="NSMutableArray" id="lOd-6d-oxI"/>
                         <outletCollection property="cardButtons" destination="Rcj-dG-lIq" collectionClass="NSMutableArray" id="XKi-Po-wRx"/>

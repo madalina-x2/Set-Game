@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     @IBOutlet weak private var setCountLabel: UILabel!
     @IBOutlet weak private var scoreLabel: UILabel!
     @IBOutlet weak private var deckCountLabel: UILabel!
+    @IBOutlet weak private var setInformLabel: UILabel!
     
     
     @IBAction private func newGame(_ sender: UIButton) {
@@ -47,6 +48,7 @@ class ViewController: UIViewController {
         deckCountLabel.text = "DECK: \(game.deckCount)"
         scoreLabel.text = "SCORE: \(game.score)"
         setCountLabel.text = "SETS: \(game.cardsSets.count)"
+//        setInformLabel.text = ": \(game.set)"
         
         if game.cardsOnTable.count < 27, game.deckCount > 0 {
             dealCardsButton.isEnabled = true
