@@ -39,6 +39,12 @@ class ViewController: UIViewController {
     
     @IBOutlet weak private var dealCardsButton: UIButton!
     
+    @objc func clearLabel() {
+        setInformLabel.text = ""
+        setInformLabel.alpha = 0.0
+        //setInformLabel.isHidden = true
+    }
+    
     @IBAction private func dealCards(_ sender: UIButton) {
         game.dealThreeCards()
         updateViewFromModel()
@@ -48,7 +54,22 @@ class ViewController: UIViewController {
         deckCountLabel.text = "DECK: \(game.deckCount)"
         scoreLabel.text = "SCORE: \(game.score)"
         setCountLabel.text = "SETS: \(game.cardsSets.count)"
-//        setInformLabel.text = ": \(game.set)"
+        if game.cardsSelected.count == 3 {
+            if self.game.isSet == true {
+                self.setInformLabel.text = "SET!"
+                self.setInformLabel.textColor = .green
+                //colorSetButtons(for: true)
+            } else {
+                self.setInformLabel.text = "X SET"
+                self.setInformLabel.textColor = .red
+                //colorSetButtons(for: false)
+            }
+            UIView.animate(withDuration: 0.3, animations: {
+                self.setInformLabel.alpha = 1.0
+            }) { (_) in
+                self.perform(#selector(self.clearLabel), with: nil, afterDelay: 2)
+            }
+        }
         
         if game.cardsOnTable.count < 27, game.deckCount > 0 {
             dealCardsButton.isEnabled = true
@@ -63,18 +84,19 @@ class ViewController: UIViewController {
                     button.setAttributedTitle(attributedStringForCard(game.cardsOnTable[index]), for: .normal)
                     button.isEnabled = true
                     button.isHidden = false
-                    button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
-                    
+                    if game.cardsSelected.contains(card) {
+                        button.layer.backgroundColor = #colorLiteral(red: 0.8037576079, green: 0.788402617, blue: 0.6902456284, alpha: 1)
+                    } else {
+                         button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
+                    }
                     button.layer.cornerRadius = 8.0
                 }
             } else {
                 button.isHidden = true
-                
                 button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
                 button.setTitle("", for: UIControlState.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
             }
-            
         }
         // TODO
     }

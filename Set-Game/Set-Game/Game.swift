@@ -14,7 +14,7 @@ struct Game {
     var deckCount: Int { return deck.cards.count }
     
     private(set) var score = 0
-    private(set) var set = "X SET"
+    private(set) var set = false
     
     private(set) var cardsOnTable = [Card]()
     private(set) var cardsSelected = [Card]()
@@ -24,25 +24,24 @@ struct Game {
         dealCards(12) { deal() }
     }
     
-    private var isSet: Bool? {
+    private(set) var isSet: Bool? {
         get {
             if cardsSelected.count == 3 {
                 return cardsSelected.isSet()
             } else { return nil }
         }
         set {
-            if newValue != nil {
-                switch newValue! {
+            if let newValue = newValue {
+                set = newValue
+                switch newValue {
                 case true:
                     cardsSets.append(cardsSelected)
                     score += scoreBonus()
                     replaceOrRemoveCard()
                     cardsSelected.removeAll()
-                    set = "SET!"
                 case false:
                     cardsSelected.removeAll()
                     score += scorePenalty()
-                    set = "X SET"
                 }
             } else { cardsSelected.removeAll() }
         }
@@ -54,18 +53,23 @@ struct Game {
         
         let chosenCard = cardsOnTable[index]
         
-        switch cardsSelected {
+        if cardsSelected.contains(chosenCard), cardsSelected.count < 3{
+            cardsSelected = cardsSelected.filter() { $0 != chosenCard }
+        } else {
+            switch cardsSelected {
             // if = 3 cards, check for SET match
             case let cardsForSet where cardsForSet.count == 3:
                 isSet = isSet
+                cardsSelected.removeAll(); cardsSelected.append(chosenCard)
             // if < 3 => add chosen card to selected
             case let cardsForSet where !cardsForSet.contains(chosenCard):
                 cardsSelected.append(chosenCard)
             // not a match, start building a set from currently chosen card
-            default:
-                cardsSelected = cardsSelected.filter() { $0 == chosenCard }
-            
+            default: break
+            }
         }
+        
+        
     }
     
     mutating func reset() {
@@ -140,6 +144,6 @@ private extension Game {
     }
     
     func scorePenalty() -> Int {
-        return 7 - scoreBonus()
+        return scoreBonus() - 7
     }
 }
