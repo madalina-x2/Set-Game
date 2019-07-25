@@ -14,12 +14,18 @@ struct Game {
     var deckCount: Int { return deck.cards.count }
     
     private(set) var score = 0
+    //private(set) var iosScore = 0
     private(set) var set = false
+    //private(set) var playVersusIos = false
     
     private(set) var cardsOnTable = [Card]()
     private(set) var cardsSelected = [Card]()
     private(set) var cardsSets = [[Card]]()
     private(set) var cardsHint = [Card]()
+    
+    private(set) var startTime = Date()
+    private(set) var endTime = Date()
+
     
     init() {
         dealCards(12) { deal() }
@@ -36,10 +42,12 @@ struct Game {
                 set = newValue
                 switch newValue {
                 case true:
+                    timer()
                     cardsSets.append(cardsSelected)
                     score += scoreBonus()
                     replaceOrRemoveCard()
                     cardsSelected.removeAll()
+                    startTime = Date()
                 case false:
                     cardsSelected.removeAll()
                     score += scorePenalty()
@@ -47,6 +55,20 @@ struct Game {
             } else { cardsSelected.removeAll() }
         }
         
+    }
+    
+    mutating func timer() {
+        endTime = Date()
+        let timeInterval: Double = endTime.timeIntervalSince(startTime)
+        
+        switch timeInterval {
+        case 0...7:
+            score += 2
+        case 7...15:
+            score += 1
+        default:
+            score += 0
+        }
     }
     
     mutating func chooseCard(at index: Int) {
@@ -61,7 +83,8 @@ struct Game {
             // if = 3 cards, check for SET match
             case let cardsForSet where cardsForSet.count == 3:
                 isSet = isSet
-                cardsSelected.removeAll(); cardsSelected.append(chosenCard)
+                cardsSelected.removeAll();
+                cardsSelected.append(chosenCard)
             // if < 3 => add chosen card to selected
             case let cardsForSet where !cardsForSet.contains(chosenCard):
                 cardsSelected.append(chosenCard)
