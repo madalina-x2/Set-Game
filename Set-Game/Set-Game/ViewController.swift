@@ -42,13 +42,47 @@ class ViewController: UIViewController {
     @objc func clearLabel() {
         setInformLabel.text = ""
         setInformLabel.alpha = 0.0
-        //setInformLabel.isHidden = true
+    }
+    
+    @objc func clearColor(for button: UIButton) {
+        button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
     }
     
     @IBAction private func dealCards(_ sender: UIButton) {
         game.dealThreeCards()
         updateViewFromModel()
     }
+    
+    @IBAction func giveHint(_ sender: UIButton) {
+        game.giveHint()
+        updateViewFromModel()
+    }
+    
+    // TODO not working 
+//    private func colorSetButtons(for setCase: Bool) {
+//        var backgroundColor: CGColor
+//        if setCase {
+//            backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
+//        } else {
+//            backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
+//        }
+//
+//        for index in cardButtons.indices {
+//            let button = cardButtons[index]
+//            if index < game.cardsOnTable.count {
+//                let card: Card? = game.cardsOnTable[index]
+//
+//                if let card = card, game.cardsOnTable.contains(card) {
+//                    if game.cardsSelected.contains(card) {
+//                        button.layer.backgroundColor = backgroundColor
+//                    } else {
+//                        button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
     
     private func updateViewFromModel() {
         deckCountLabel.text = "DECK: \(game.deckCount)"
@@ -58,11 +92,9 @@ class ViewController: UIViewController {
             if self.game.isSet == true {
                 self.setInformLabel.text = "SET!"
                 self.setInformLabel.textColor = .green
-                //colorSetButtons(for: true)
             } else {
                 self.setInformLabel.text = "X SET"
                 self.setInformLabel.textColor = .red
-                //colorSetButtons(for: false)
             }
             UIView.animate(withDuration: 0.3, animations: {
                 self.setInformLabel.alpha = 1.0
@@ -84,7 +116,20 @@ class ViewController: UIViewController {
                     button.setAttributedTitle(attributedStringForCard(game.cardsOnTable[index]), for: .normal)
                     button.isEnabled = true
                     button.isHidden = false
-                    if game.cardsSelected.contains(card) {
+                    if game.cardsHint.contains(card){
+                        button.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.9558855858, blue: 0.7371077641, alpha: 1)
+                    } else if game.cardsSelected.count == 3, game.cardsSelected.contains(card) {
+                        if self.game.isSet == true {
+                            button.layer.backgroundColor = #colorLiteral(red: 0.7741263415, green: 0.8862745166, blue: 0.6670993155, alpha: 1)
+                        } else {
+//                            UIView.animate(withDuration: 0.3, animations: {
+//                                button.layer.backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
+//                            }) { (_) in
+//                                self.perform(#selector(self.clearColor(for: button)), with: nil, afterDelay: 2)
+//                            }
+                            button.layer.backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.795463549, blue: 0.7752267202, alpha: 1)
+                        }
+                    } else if game.cardsSelected.contains(card) {
                         button.layer.backgroundColor = #colorLiteral(red: 0.8037576079, green: 0.788402617, blue: 0.6902456284, alpha: 1)
                     } else {
                          button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)

@@ -19,6 +19,7 @@ struct Game {
     private(set) var cardsOnTable = [Card]()
     private(set) var cardsSelected = [Card]()
     private(set) var cardsSets = [[Card]]()
+    private(set) var cardsHint = [Card]()
     
     init() {
         dealCards(12) { deal() }
@@ -92,10 +93,16 @@ struct Game {
         }
     }
     
-    mutating func isEnd() -> Bool {
+    func isEnd() -> Bool {
         // TODO
         // how to check when it's over
         return false
+    }
+    
+    mutating func giveHint() {
+        cardsSelected.removeAll()
+        cardsHint = cardsOnTable.getSetCards() { $0.isSet() }
+        score += Score.hint.rawValue
     }
 }
 
@@ -112,10 +119,26 @@ private extension Array where Element == Card {
     }
 }
 
+private extension Array where Element: Equatable {
+    func getSetCards(_ closure: (_ check: [Element]) -> (Bool)) -> [Element] {
+        for i in 0..<self.count  {
+            for j in (i + 1)..<self.count {
+                for k in (j + 1)..<self.count {
+                    let result = [self[i],self[j],self[k]]
+                    if closure(result) {
+                        return result
+                    }
+                }
+            }
+        }
+        return []
+    }
+}
+
 private extension Game {
     
     enum Score: Int {
-        case bonus, penalty
+        case bonus, penalty, hint = -5
     }
     
     mutating func deal() {
