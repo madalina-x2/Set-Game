@@ -14,12 +14,12 @@ struct Game {
     var deckCount: Int { return deck.cards.count }
     
     private(set) var score = 0
-    //private(set) var iosScore = 0
+    private(set) var iosScore = 0
     private(set) var set = false
-    //private(set) var playVersusIos = false
+    private(set) var playVersusIos = false
     
     private(set) var cardsOnTable = [Card]()
-    private(set) var cardsSelected = [Card]()
+    var cardsSelected = [Card]()
     private(set) var cardsSets = [[Card]]()
     private(set) var cardsHint = [Card]()
     
@@ -31,7 +31,7 @@ struct Game {
         dealCards(12) { deal() }
     }
     
-    private(set) var isSet: Bool? {
+    var isSet: Bool? {
         get {
             if cardsSelected.count == 3 {
                 return cardsSelected.isSet()
@@ -54,7 +54,6 @@ struct Game {
                 }
             } else { cardsSelected.removeAll() }
         }
-        
     }
     
     mutating func timer() {
@@ -92,8 +91,6 @@ struct Game {
             default: break
             }
         }
-        
-        
     }
     
     mutating func reset() {
@@ -124,6 +121,7 @@ struct Game {
     
     mutating func giveHint() {
         cardsSelected.removeAll()
+        cardsHint.removeAll()
         cardsHint = cardsOnTable.getSetCards() { $0.isSet() }
         score += Score.hint.rawValue
     }
