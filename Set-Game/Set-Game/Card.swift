@@ -41,7 +41,7 @@ struct Card {
 }
 
 extension Card: Equatable {
-    static func ==(lhs: Card, rhs: Card) -> Bool {
+    static func == (lhs: Card, rhs: Card) -> Bool {
         return  lhs.number == rhs.number &&
             lhs.symbol == rhs.symbol &&
             lhs.decoration == rhs.decoration &&

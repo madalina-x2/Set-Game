@@ -15,6 +15,8 @@
 		C5DC573522DDB65500AC9D8B /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DC573422DDB65500AC9D8B /* Card.swift */; };
 		C5DC573722DDBD2F00AC9D8B /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DC573622DDBD2F00AC9D8B /* Deck.swift */; };
 		C5DC573922DDDBF800AC9D8B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DC573822DDDBF800AC9D8B /* Game.swift */; };
+		C5FDEECA22F06A25005594C5 /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FDEEC922F06A25005594C5 /* IntExtensions.swift */; };
+		C5FDEECC22F06A50005594C5 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FDEECB22F06A4F005594C5 /* ArrayExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		C5DC573422DDB65500AC9D8B /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		C5DC573622DDBD2F00AC9D8B /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		C5DC573822DDDBF800AC9D8B /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		C5FDEEC922F06A25005594C5 /* IntExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensions.swift; sourceTree = "<group>"; };
+		C5FDEECB22F06A4F005594C5 /* ArrayExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,10 +66,12 @@
 			children = (
 				C5DC573322DCCF4500AC9D8B /* Supporting Files */,
 				C5DC572322DCCDFA00AC9D8B /* ViewController.swift */,
+				C5FDEEC922F06A25005594C5 /* IntExtensions.swift */,
 				C5DC572522DCCDFA00AC9D8B /* Main.storyboard */,
 				C5DC573422DDB65500AC9D8B /* Card.swift */,
 				C5DC573822DDDBF800AC9D8B /* Game.swift */,
 				C5DC573622DDBD2F00AC9D8B /* Deck.swift */,
+				C5FDEECB22F06A4F005594C5 /* ArrayExtensions.swift */,
 				C5DC572822DCCDFB00AC9D8B /* Assets.xcassets */,
 				C5DC572D22DCCDFB00AC9D8B /* Info.plist */,
 			);
@@ -154,7 +160,9 @@
 			files = (
 				C5DC573722DDBD2F00AC9D8B /* Deck.swift in Sources */,
 				C5DC573922DDDBF800AC9D8B /* Game.swift in Sources */,
+				C5FDEECC22F06A50005594C5 /* ArrayExtensions.swift in Sources */,
 				C5DC572422DCCDFA00AC9D8B /* ViewController.swift in Sources */,
+				C5FDEECA22F06A25005594C5 /* IntExtensions.swift in Sources */,
 				C5DC573522DDB65500AC9D8B /* Card.swift in Sources */,
 				C5DC572222DCCDFA00AC9D8B /* AppDelegate.swift in Sources */,
 			);

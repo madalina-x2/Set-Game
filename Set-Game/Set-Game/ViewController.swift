@@ -9,31 +9,59 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    //MARK: - Private Properties
     private var game = Game()
     private var playAgainstIos = false
     private var iosWonRound = false
-    
-    @IBOutlet var cardButtons: [UIButton]!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateViewFromModel()
-    }
-
+    private var timer: Timer?
+    @IBOutlet private var cardButtons: [UIButton]!
     @IBOutlet weak private var setCountLabel: UILabel!
     @IBOutlet weak private var scoreLabel: UILabel!
     @IBOutlet weak private var deckCountLabel: UILabel!
     @IBOutlet weak private var setInformLabel: UILabel!
     @IBOutlet weak private var iosLabel: UILabel!
+    @IBOutlet weak private var dealCardsButton: UIButton!
     
+    //MARK: - Button Actions
     @IBAction private func newGame(_ sender: UIButton) {
         game.reset()
         updateViewFromModel()
     }
     
+    @IBAction private func dealCards(_ sender: UIButton) {
+        game.dealThreeCards()
+        updateViewFromModel()
+    }
+    
+    @IBAction func giveHint(_ sender: UIButton) {
+        game.giveHint()
+        updateViewFromModel()
+    }
+    
+    @IBAction func playAgainstIos(_ sender: UIButton) {
+        game.reset()
+        playAgainstIos = true
+        iosLabel.text = "iOS: 🤔"
+        waitForFunc(duration: 10, selector: #selector(self.iosTurn))
+        updateViewFromModel()
+    }
+    
+    @IBAction func touchCard(_ sender: UIButton) {
+        if let cardNumber = cardButtons.index(of: sender) {
+            game.chooseCard(at: cardNumber)
+            updateViewFromModel()
+        }
+    }
+    
+    //MARK: - Overriden Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateViewFromModel()
+    }
+    
+    //MARK: - Auxiliary Methods
     @objc func iosEnterRound() {
-        print("did enter iOS turn")
         cardButtons.forEach { (button) in
             button.isEnabled = false
         }
@@ -45,7 +73,6 @@ class ViewController: UIViewController {
     }
     
     @objc func iosMakeSet() {
-        print("iOS make set")
         game.cardsSelected.removeAll()
         game.cardsSelected = game.cardsHint
         updateViewFromModel()
@@ -54,7 +81,6 @@ class ViewController: UIViewController {
     }
     
     @objc func iosExitRound() {
-        print("ios Exist round")
         iosLabel.text = "iOS: 🤔"
         
         updateViewFromModel()
@@ -70,29 +96,10 @@ class ViewController: UIViewController {
         waitForFunc(duration: 2.0, selector: #selector(self.iosEnterRound))
     }
     
-    var timer: Timer?
     func waitForFunc(duration: TimeInterval, selector: Selector) {
         timer?.invalidate()
-        print("will wait for \(duration)")
         timer = Timer.scheduledTimer(timeInterval: duration, target: self, selector: selector, userInfo:nil, repeats: false)
     }
-    
-    @IBAction func playAgainstIos(_ sender: UIButton) {
-        game.reset()
-        playAgainstIos = true
-        iosLabel.text = "iOS: 🤔"
-        waitForFunc(duration: 10, selector: #selector(self.iosTurn))
-        updateViewFromModel()
-    }
-    
-    @IBAction func touchCard(_ sender: UIButton) {
-        if let cardNumber = cardButtons.index(of: sender) {
-            game.chooseCard(at: cardNumber)
-            updateViewFromModel()
-        } else { print("chosen card was not in cardButtons") }
-    }
-    
-    @IBOutlet weak private var dealCardsButton: UIButton!
     
     @objc func clearLabel() {
         setInformLabel.text = ""
@@ -103,86 +110,107 @@ class ViewController: UIViewController {
         button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
     }
     
-    @IBAction private func dealCards(_ sender: UIButton) {
-        game.dealThreeCards()
-        updateViewFromModel()
-    }
+    //MARK: - UI Methods
     
-    @IBAction func giveHint(_ sender: UIButton) {
-        game.giveHint()
-        updateViewFromModel()
-    }
-    
-    private func updateViewFromModel() {
+    private func updateInfoLabels() {
         deckCountLabel.text = "DECK: \(game.deckCount)"
         scoreLabel.text = "SCORE: \(game.score)"
         setCountLabel.text = "SETS: \(game.cardsSets.count)"
-        if game.cardsSelected.count == 3 {
-            if self.game.isSet == true {
-                self.setInformLabel.text = "✅"
-                self.setInformLabel.textColor = .green
-                if playAgainstIos, !iosWonRound {
-                    print("a set was made")
-                    waitForFunc(duration: 10, selector: #selector(self.iosTurn))
-                    iosLabel.text = "iOS: 😢"
-                }
-            } else {
-                self.setInformLabel.text = "𝗫"
-                self.setInformLabel.textColor = .red
-            }
-            UIView.animate(withDuration: 0.3, animations: {
-                self.setInformLabel.alpha = 1.0
-            }) { (_) in
-                self.perform(#selector(self.clearLabel), with: nil, afterDelay: 2)
-            }
+    }
+    
+    private func didSelectValidSet() {
+        self.setInformLabel.text = "✅"
+        self.setInformLabel.textColor = .green
+        if playAgainstIos, !iosWonRound {
+            waitForFunc(duration: 10, selector: #selector(self.iosTurn))
+            iosLabel.text = "iOS: 😢"
         }
-        
+    }
+    
+    private func didSelectInvalidSet() {
+        self.setInformLabel.text = "𝗫"
+        self.setInformLabel.textColor = .red
+    }
+    
+    private func didSelectSet() {
+        if self.game.isSet == true {
+            didSelectValidSet()
+        } else {
+            didSelectInvalidSet()
+        }
+    }
+    
+    private func setupDealCardsButton() {
         if game.cardsOnTable.count < 27, game.deckCount > 0 {
             dealCardsButton.isEnabled = true
-        } else { dealCardsButton.isEnabled = false }
-        
-        for index in cardButtons.indices {
-            let button = cardButtons[index]
-            if index < game.cardsOnTable.count {
-                let card: Card? = game.cardsOnTable[index]
-                
-                if let card = card, game.cardsOnTable.contains(card) {
-                    button.setAttributedTitle(attributedStringForCard(game.cardsOnTable[index]), for: .normal)
-                    button.isEnabled = true
-                    button.isHidden = false
-                    if game.cardsHint.contains(card){
-                        button.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.9558855858, blue: 0.7371077641, alpha: 1)
-                    } else if game.cardsSelected.count == 3, game.cardsSelected.contains(card) {
-                        if self.game.isSet == true {
-                            button.layer.backgroundColor = #colorLiteral(red: 0.7741263415, green: 0.8862745166, blue: 0.6670993155, alpha: 1)
-                        } else {
-                            UIView.animate(withDuration: 0.3, animations: {
-                                button.layer.backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
-                            }) { (finished) in
-                                print(finished)
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-                                    if (self.game.cardsSelected.contains(card)){
-                                        button.layer.backgroundColor = #colorLiteral(red: 0.8037576079, green: 0.788402617, blue: 0.6902456284, alpha: 1)
-                                    } else {
-                                        button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
-                                    }
-                                })
-                            }
-                        }
-                    } else if game.cardsSelected.contains(card) {
-                        button.layer.backgroundColor = #colorLiteral(red: 0.8037576079, green: 0.788402617, blue: 0.6902456284, alpha: 1)
-                    } else {
-                         button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
-                    }
-                    button.layer.cornerRadius = 8.0
-                }
+        } else {
+            dealCardsButton.isEnabled = false
+        }
+    }
+    
+    private func hideCardFromScreen(_ button: UIButton) {
+        button.isHidden = true
+        button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
+        button.setTitle("", for: UIControlState.normal)
+        button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
+    }
+    
+    private func populate(button: UIButton, from card: Card){
+        button.setAttributedTitle(attributedStringForCard(card), for: .normal)
+        button.isEnabled = true
+        button.isHidden = false
+        button.layer.cornerRadius = 8.0
+    }
+    
+    private func set(button: UIButton, selected: Bool){
+        if selected {
+            button.layer.backgroundColor = #colorLiteral(red: 0.8037576079, green: 0.788402617, blue: 0.6902456284, alpha: 1)
+        } else {
+            button.layer.backgroundColor = #colorLiteral(red: 0.9096221924, green: 0.9060236216, blue: 0.8274506927, alpha: 1)
+        }
+    }
+    
+    private func setupBackground(of button: UIButton, from card: Card) {
+        if game.cardsHint.contains(card){
+            button.layer.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.9558855858, blue: 0.7371077641, alpha: 1)
+        }
+        if game.cardsSelected.count == 3, game.cardsSelected.contains(card) {
+            if self.game.isSet == true {
+                button.layer.backgroundColor = #colorLiteral(red: 0.7741263415, green: 0.8862745166, blue: 0.6670993155, alpha: 1)
             } else {
-                button.isHidden = true
-                button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
-                button.setTitle("", for: UIControlState.normal)
-                button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
+                UIView.animate(withDuration: 0.3, animations: {
+                    button.layer.backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
+                }) { (_) in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+                        self.set(button: button, selected: self.game.cardsSelected.contains(card))
+                    })
+                }
+                return
             }
         }
+        set(button: button, selected: game.cardsSelected.contains(card))
+    }
+    
+    private func updateCardButtons() {
+        for (index, button) in cardButtons.enumerated() {
+            if index >= game.cardsOnTable.count {
+                hideCardFromScreen(button)
+                continue
+            }
+            let card = game.cardsOnTable[index]
+            
+            populate(button: button, from: card)
+            setupBackground(of: button, from: card)
+        }
+    }
+
+    private func updateViewFromModel() {
+        updateInfoLabels()
+        if game.cardsSelected.count == 3 {
+            didSelectSet()
+        }
+        setupDealCardsButton()
+        updateCardButtons()
     }
     
     private func attributedStringForCard(_ card: Card) -> NSAttributedString {
