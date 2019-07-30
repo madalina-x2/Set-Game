@@ -12,8 +12,8 @@ struct Card {
     
     let number: Number
     let symbol: Symbol
-    let color: Color
     let decoration: Decoration
+    let color: Color
     
     enum Number: Int {
         case one, two, three
@@ -41,7 +41,7 @@ struct Card {
 }
 
 extension Card: Equatable {
-    static func ==(lhs: Card, rhs: Card) -> Bool {
+    static func == (lhs: Card, rhs: Card) -> Bool {
         return  lhs.number == rhs.number &&
             lhs.symbol == rhs.symbol &&
             lhs.decoration == rhs.decoration &&
